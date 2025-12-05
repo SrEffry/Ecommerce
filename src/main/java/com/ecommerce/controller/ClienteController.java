@@ -40,7 +40,7 @@ public class ClienteController {
             verificarCliente(session);
             List<Producto> productos = ecommerceFacade.obtenerProductosDisponibles();
             model.addAttribute("productos", productos);
-            return "catalogo-productos";
+            return "Catalogo-productos";
         } catch (SecurityException e) {
             return "redirect:/login";
         }
@@ -58,7 +58,7 @@ public class ClienteController {
             verificarCliente(session);
             Producto producto = ecommerceFacade.obtenerProductoPorId(id);
             model.addAttribute("producto", producto);
-            return "detalle-producto";
+            return "Detalle-producto";
         } catch (SecurityException e) {
             return "redirect:/login";
         } catch (Exception e) {
@@ -110,7 +110,7 @@ public class ClienteController {
             Usuario cliente = verificarCliente(session);
             List<Pedido> compras = ecommerceFacade.obtenerComprasCliente(cliente);
             model.addAttribute("compras", compras);
-            return "mis-compras";
+            return "Mis-compras";
         } catch (SecurityException e) {
             return "redirect:/login";
         }

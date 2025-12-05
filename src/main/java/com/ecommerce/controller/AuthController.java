@@ -26,7 +26,7 @@ public class AuthController {
         if (usuario != null) {
             return "redirect:/dashboard";
         }
-        return "login";
+        return "Login";
     }
 
     @PostMapping("/login")
@@ -47,7 +47,7 @@ public class AuthController {
 
     @GetMapping("/registro")
     public String mostrarRegistro() {
-        return "registro";
+        return "Registro";
     }
 
     @PostMapping("/registro")

@@ -39,7 +39,7 @@ public class VendedorController {
             Usuario vendedor = verificarVendedor(session);
             List<Producto> productos = ecommerceFacade.obtenerProductosVendedor(vendedor);
             model.addAttribute("productos", productos);
-            return "mis-productos";
+            return "Mis-productos";
         } catch (SecurityException e) {
             return "redirect:/login";
         }
@@ -49,7 +49,7 @@ public class VendedorController {
     public String mostrarFormularioPublicar(HttpSession session) {
         try {
             verificarVendedor(session);
-            return "publicar-producto";
+            return "Publicar-producto";
         } catch (SecurityException e) {
             return "redirect:/login";
         }
@@ -83,7 +83,7 @@ public class VendedorController {
             List<Pedido> pedidos = ecommerceFacade.obtenerPedidosVendedor(vendedor);
             model.addAttribute("pedidos", pedidos);
             model.addAttribute("estados", EstadoPedido.values());
-            return "pedidos-vendedor";
+            return "Pedidos-vendedor";
         } catch (SecurityException e) {
             return "redirect:/login";
         }
