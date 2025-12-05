@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Productos - E-Commerce</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .navbar h1 {
+            font-size: 24px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 5px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .header h2 {
+            color: #333;
+        }
+        .btn-publicar {
+            padding: 12px 30px;
+            background: #11998e;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+        .productos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .producto-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .producto-imagen {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+        }
+        .producto-info {
+            padding: 20px;
+        }
+        .producto-nombre {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .producto-descripcion {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            max-height: 60px;
+            overflow: hidden;
+        }
+        .producto-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .stat-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #11998e;
+        }
+        .producto-estado {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .estado-activo {
+            background: #d4edda;
+            color: #155724;
+        }
+        .estado-inactivo {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .no-productos {
+            text-align: center;
+            padding: 80px 20px;
+            background: white;
+            border-radius: 10px;
+        }
+        .no-productos-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>📦 Mis Productos</h1>
+        <a href="/dashboard">← Volver al Dashboard</a>
+    </nav>
+    
+    <div class="container">
+        <div class="header">
+            <h2>Inventario de Productos</h2>
+            <a href="/vendedor/publicar-producto" class="btn-publicar">+ Publicar Nuevo</a>
+        </div>
+        
+        <div th:if="${productos.isEmpty()}" class="no-productos">
+            <div class="no-productos-icon">📭</div>
+            <h3>No has publicado productos aún</h3>
+            <p>Comienza a vender publicando tu primer producto</p>
+            <a href="/vendedor/publicar-producto" class="btn-publicar" style="display: inline-block; margin-top: 20px;">
+                Publicar Producto
+            </a>
+        </div>
+        
+        <div class="productos-grid" th:if="${!productos.isEmpty()}">
+            <div class="producto-card" th:each="producto : ${productos}">
+                <div class="producto-imagen">📦</div>
+                <div class="producto-info">
+                    <div class="producto-nombre" th:text="${producto.nombre}"></div>
+                    <div class="producto-descripcion" th:text="${producto.descripcion}"></div>
+                    
+                    <div class="producto-stats">
+                        <div class="stat-item">
+                            <div class="stat-label">Precio</div>
+                            <div class="stat-value">$<span th:text="${producto.precio}"></span></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Stock</div>
+                            <div class="stat-value" th:text="${producto.stock}"></div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">Estado</div>
+                            <div class="producto-estado"
+                                 th:classappend="${producto.activo} ? 'estado-activo' : 'estado-inactivo'"
+                                 th:text="${producto.activo} ? 'Activo' : 'Inactivo'"></div>
+                        </div>
+                    </div>
+                    
+                    <div style="font-size: 12px; color: #666;">
+                        <strong>Categoría:</strong> <span th:text="${producto.categoria}"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

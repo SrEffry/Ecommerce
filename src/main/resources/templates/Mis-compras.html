@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Compras - E-Commerce</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .navbar h1 {
+            font-size: 24px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 5px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .header {
+            margin-bottom: 30px;
+        }
+        .header h2 {
+            color: #333;
+        }
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .pedido-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        .pedido-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .pedido-id {
+            font-size: 14px;
+            color: #666;
+        }
+        .pedido-fecha {
+            font-size: 14px;
+            color: #666;
+        }
+        .pedido-body {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 20px;
+            align-items: center;
+        }
+        .producto-icon {
+            font-size: 50px;
+        }
+        .producto-detalles h3 {
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .producto-info {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .pedido-estado {
+            text-align: right;
+        }
+        .estado-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .estado-COMPRADO {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .estado-EN_CAMINO {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        .estado-ENTREGADO {
+            background: #d4edda;
+            color: #155724;
+        }
+        .estado-CANCELADO {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .pedido-precio {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
+        }
+        .no-compras {
+            text-align: center;
+            padding: 80px 20px;
+            background: white;
+            border-radius: 10px;
+        }
+        .no-compras-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+        @media (max-width: 768px) {
+            .pedido-body {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .pedido-estado {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>📦 Mis Compras</h1>
+        <a href="/dashboard">← Volver al Dashboard</a>
+    </nav>
+    
+    <div class="container">
+        <div class="header">
+            <h2>Historial de Compras</h2>
+        </div>
+        
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        
+        <div th:if="${compras.isEmpty()}" class="no-compras">
+            <div class="no-compras-icon">🛍️</div>
+            <h3>No has realizado compras aún</h3>
+            <p>Explora nuestro catálogo y encuentra los productos que necesitas</p>
+            <a href="/cliente/catalogo" class="btn">Ver Catálogo</a>
+        </div>
+        
+        <div th:if="${!compras.isEmpty()}">
+            <div class="pedido-card" th:each="compra : ${compras}">
+                <div class="pedido-header">
+                    <span class="pedido-id">Pedido #<span th:text="${compra.id}"></span></span>
+                    <span class="pedido-fecha" th:text="${#temporals.format(compra.fechaPedido, 'dd/MM/yyyy HH:mm')}"></span>
+                </div>
+                
+                <div class="pedido-body">
+                    <div class="producto-icon">📦</div>
+                    
+                    <div class="producto-detalles">
+                        <h3 th:text="${compra.producto.nombre}"></h3>
+                        <div class="producto-info">
+                            <p><strong>Cantidad:</strong> <span th:text="${compra.cantidad}"></span></p>
+                            <p><strong>Vendedor:</strong> <span th:text="${compra.vendedor.nombre}"></span></p>
+                            <p><strong>Dirección:</strong> <span th:text="${compra.direccionEnvio}"></span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="pedido-estado">
+                        <div class="estado-badge" 
+                             th:classappend="'estado-' + ${compra.estado}"
+                             th:text="${compra.estado.descripcion}"></div>
+                        <div class="pedido-precio">$<span th:text="${compra.precioTotal}"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

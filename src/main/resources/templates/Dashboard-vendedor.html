@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Vendedor - E-Commerce</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+        }
+        .navbar {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .navbar h1 {
+            font-size: 24px;
+        }
+        .navbar-user {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .navbar-user span {
+            font-size: 14px;
+        }
+        .btn-logout {
+            padding: 8px 20px;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid white;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .btn-logout:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .welcome {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .welcome h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .welcome p {
+            color: #666;
+        }
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        .card-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        .card h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .card p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #11998e;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #0e8078;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>💼 E-Commerce - Vendedor</h1>
+        <div class="navbar-user">
+            <span>👤 <span th:text="${usuario.nombre}"></span></span>
+            <a href="/logout" class="btn-logout">Cerrar Sesión</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="welcome">
+            <h2>Panel de Control de Ventas</h2>
+            <p>Administra tus productos y pedidos</p>
+        </div>
+        
+        <div class="dashboard-cards">
+            <div class="card" onclick="window.location.href='/vendedor/mis-productos'">
+                <div class="card-icon">📦</div>
+                <h3>Mis Productos</h3>
+                <p>Gestiona tu inventario de productos publicados</p>
+                <a href="/vendedor/mis-productos" class="btn">Ver Productos</a>
+            </div>
+            
+            <div class="card" onclick="window.location.href='/vendedor/publicar-producto'">
+                <div class="card-icon">➕</div>
+                <h3>Publicar Producto</h3>
+                <p>Agrega un nuevo producto a tu catálogo</p>
+                <a href="/vendedor/publicar-producto" class="btn">Publicar</a>
+            </div>
+            
+            <div class="card" onclick="window.location.href='/vendedor/pedidos'">
+                <div class="card-icon">🚚</div>
+                <h3>Pedidos</h3>
+                <p>Administra y actualiza el estado de los pedidos</p>
+                <a href="/vendedor/pedidos" class="btn">Ver Pedidos</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
