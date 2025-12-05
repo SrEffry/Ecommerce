@@ -74,13 +74,24 @@ public class AuthController {
         return "redirect:/login";
     }
 
-    @GetMapping("/dashboard")
-    public String mostrarDashboard(HttpSession session, Model model) {
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        if (usuario == null) {
-            return "redirect:/login";
-        }
-        model.addAttribute("usuario", usuario);
-        return ecommerceFacade.obtenerVistaDashboard(usuario);
+   @GetMapping("/dashboard")
+public String mostrarDashboard(HttpSession session, Model model) {
+    Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+    if (usuario == null) {
+        return "redirect:/login";
     }
+
+    model.addAttribute("usuario", usuario);
+
+    // Redirige según el tipo de usuario
+    if (usuario.getTipoUsuario() == TipoUsuario.CLIENTE) {
+        return "redirect:/cliente/catalogo";
+    } else if (usuario.getTipoUsuario() == TipoUsuario.VENDEDOR) {
+        return "redirect:/vendedor/mis-productos";
+    } else {
+        // Usuario no reconocido
+        return "Login"; // o una página de error personalizada
+    }
+}
+
 }
